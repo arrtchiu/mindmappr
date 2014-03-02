@@ -33,6 +33,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'shoulda-matchers'
   gem 'sqlite3'
+  gem 'json_spec'
 end
 
 group :production do
@@ -40,3 +41,6 @@ group :production do
   gem 'pg'
   gem 'unicorn'
 end
+
+gem 'redis'
+gem 'connection_pool'

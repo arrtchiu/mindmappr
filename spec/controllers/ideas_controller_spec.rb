@@ -35,20 +35,53 @@ describe IdeasController do
   end
 
   describe :create do
-    let!(:mock_idea) { double(:idea) }
+    let!(:mock_idea) { double(:idea, id: 555888) }
+    let!(:mock_top_level_idea) { double(:idea, to_param: '1234') }
     let!(:model_params) { { 'content' => 'blah', 'parent_id' => '23' } }
 
     before do
-      Idea.should_receive(:create).with(model_params).and_return(mock_idea)
+      Idea.should_receive(:find).with('1234').and_return(mock_top_level_idea)
+      Idea.should_receive(:new).with(model_params).and_return(mock_idea)
+    end
+
+    subject do
       post :create, { 'idea' => model_params, 'top_level_id' => '1234' }
     end
 
-    it { should redirect_to idea_path(1234) }
+    describe :success do
+      before do
+        mock_idea.stub(:save).and_return(true)
+        Realtime.should_receive(:created)
+          .with('idea:1234', mock_idea, idea_path(mock_idea))
+      end
+
+      it { should redirect_to idea_path(1234) }
+    end
+
+    describe :failure do
+      before do
+        mock_idea.stub(:save).and_return(false)
+        Realtime.should_not_receive(:created)
+      end
+
+      it { should redirect_to idea_path(1234) }
+    end
   end
 
   describe :destroy do
+    let!(:mock_idea) { double(:idea) }
+    let!(:mock_top_level_idea) { double(:idea, to_param: '987654') }
+
     before do
-      Idea.should_receive(:destroy).with('5')
+      # Find handles case of not found by raising ActiveRecord::RecordNotFound
+      Idea.should_receive(:find).with('5').and_return(mock_idea)
+      Idea.should_receive(:find).with('987654').and_return(mock_top_level_idea)
+      mock_idea.should_receive(:destroy)
+      Realtime.should_receive(:destroyed)
+        .with('idea:987654', mock_idea, idea_path(mock_idea))
+    end
+
+    subject do
       post :destroy, { 'id' => '5', 'top_level_id' => '987654' }
     end
 
