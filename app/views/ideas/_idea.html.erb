@@ -1,0 +1,15 @@
+<ul>
+  <% locals[:idea].children.each do |child| %>
+    <li><%= child.content %></li>
+    <%= render_idea(child) %>
+  <% end %>
+  <li>
+    <%= form_for locals[:idea].children.build do |f| %>
+      <%= f.hidden_field :parent_id %>
+      <%= hidden_field_tag :top_level_id, @idea.id %>
+      <div class="form-group">
+        <%= f.text_field :content, placeholder: 'Add New' %>
+      </div>
+    <% end %>
+  </li>
+</ul>
