@@ -1,2 +1,4 @@
 <h1><%= @idea.content %></h1>
-<%= render_idea(@idea) %>
+<div class="idea idea-root" data-id="<%= @idea.to_param %>">
+  <%= render_idea_children(@idea) %>
+</div>
