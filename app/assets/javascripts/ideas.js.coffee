@@ -3,7 +3,8 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
-  socket = io.connect 'http://localhost:3001'
+  return unless window.mm_feed_server?.length
+  socket = io.connect window.mm_feed_server
 
   socket.on 'idea-event', (rocketData) ->
     rocketData = JSON.parse rocketData

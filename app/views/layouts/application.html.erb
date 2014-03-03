@@ -4,6 +4,9 @@
   <title>MindMappr</title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= javascript_tag do %>
+    window.mm_feed_server = '<%= j MindMappr::Application.config.mm_feed_server %>';
+  <% end %>
   <%= csrf_meta_tags %>
 </head>
 <body>

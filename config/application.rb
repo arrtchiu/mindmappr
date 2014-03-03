@@ -27,5 +27,6 @@ module MindMappr
     I18n.enforce_available_locales = false
 
     config.autoload_paths += %w[lib/mind_mappr]
+    config.mm_feed_server = ENV.key?('MM_FEED_SERVER') ? ENV['MM_FEED_SERVER'] : ''
   end
 end
