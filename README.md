@@ -12,8 +12,8 @@ Heroku Deployment
 2. In your `mindmappr-feed` repo, run `heroku config:get REDISCLOUD_URL`
 3. In your `mindmappr` repo, run the following commands:
 
-    heroku create
-    git push heroku master
-    heroku run rake db:migrate
-    heroku config:set REDISCLOUD_URL=redis://the-value-you-got-from-step-two
-    heroku config:set MM_FEED_SERVER=http://my-mind-mappr-feed-server.herokuapp.com
+        heroku create
+        git push heroku master
+        heroku run rake db:migrate
+        heroku config:set REDISCLOUD_URL=redis://the-value-you-got-from-step-two
+        heroku config:set MM_FEED_SERVER=http://my-mind-mappr-feed-server.herokuapp.com
